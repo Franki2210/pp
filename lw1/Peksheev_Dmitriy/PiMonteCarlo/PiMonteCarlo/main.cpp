@@ -1,12 +1,6 @@
 // main.cpp: определяет точку входа для консольного приложения.
-//
 
 #include "stdafx.h"
-#include <iostream>
-#include <math.h>
-#include "RandomizerForPoint.h"
-#include "Point.h"
-#include <windows.h>
 #include "MonteCarloMethod.h"
 
 using namespace std;
@@ -23,12 +17,11 @@ int main(int argc, char* argv[])
 		return EXIT_FAILURE;
 	}
 
-	int numberIter = atoi(argv[1]);
-	int numberThreads = atoi(argv[2]);
+	size_t numberIter = atoi(argv[1]);
+	size_t numberThreads = atoi(argv[2]);
 
 	MonteCarloMethod monteCarloMethod;
-	
-	double result = monteCarloMethod.Calculate(numberIter, CIRCLE_RADIUS);
+	double result = monteCarloMethod.Calculate(numberIter, numberThreads);
 
 	cout.precision(10);
 	cout << result << endl;

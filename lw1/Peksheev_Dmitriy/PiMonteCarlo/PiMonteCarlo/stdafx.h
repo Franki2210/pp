@@ -11,6 +11,7 @@
 #include <tchar.h>
 
 #include <cstdlib>
+#include <iostream>
 
 
 // TODO: Установите здесь ссылки на дополнительные заголовки, требующиеся для программы

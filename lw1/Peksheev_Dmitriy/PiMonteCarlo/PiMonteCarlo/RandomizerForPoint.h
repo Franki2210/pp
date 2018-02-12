@@ -1,9 +1,12 @@
 #pragma once
-#include "Point.h"
+#include "stdafx.h"
+#include <map>
+
+using namespace std;
 
 class RandomizerForPoint
 {
 public:
-	static Point GetRandomPointInSquare(double circleRadius);
+	static pair<double, double> GetRandomCoordinatesInSquare(double circleRadius);
 };
 

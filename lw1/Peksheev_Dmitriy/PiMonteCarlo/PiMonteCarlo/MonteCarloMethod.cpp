@@ -1,6 +1,28 @@
 #include "stdafx.h"
 #include "MonteCarloMethod.h"
+#include <string>
 
+DWORD WINAPI GeneratePoints(LPVOID numberIters)
+{
+	for (; MonteCarloMethod::GetCurrentNumberIter() < (UINT32)numberIters; )
+	{
+		string progress = to_string(MonteCarloMethod::GetCurrentNumberIter()) + "/" + to_string((UINT32)numberIters);
+		cout << progress << endl;
+
+		pair<double, double> point = RandomizerForPoint::GetRandomCoordinatesInSquare(1.0);
+		double x = point.first;
+		double y = point.second;
+		if (x * x + y * y <= 1)
+			MonteCarloMethod::NumberOfPointsInCircleInc();
+		MonteCarloMethod::CurrentNumberIterInc();
+		if (MonteCarloMethod::GetCurrentNumberIter() > (UINT32)numberIters) break;
+	}
+
+	return 0;
+}
+
+UINT32 MonteCarloMethod::currentNumberIter = 0;
+UINT32 MonteCarloMethod::numberOfPointsInCircle = 0;
 
 MonteCarloMethod::MonteCarloMethod()
 {
@@ -11,17 +33,34 @@ MonteCarloMethod::~MonteCarloMethod()
 {
 }
 
-double MonteCarloMethod::Calculate(int numberIter, double circleRadius)
+void MonteCarloMethod::CurrentNumberIterInc()
 {
-	int innerCount = 0;
+	InterlockedIncrement(&currentNumberIter);
+}
 
-	for (int i = 0; i < numberIter; ++i)
-	{
-		Point point = RandomizerForPoint::GetRandomPointInSquare(circleRadius);
-		if (point.GetX() * point.GetX() + point.GetY() * point.GetY() <= 1) ++innerCount;
-	}
+void MonteCarloMethod::NumberOfPointsInCircleInc()
+{
+	InterlockedIncrement(&numberOfPointsInCircle);
+}
 
-	double result = (double)(4. * innerCount / numberIter);
+unsigned long MonteCarloMethod::GetCurrentNumberIter()
+{
+	return currentNumberIter;
+}
 
+unsigned long MonteCarloMethod::GetNumberOfPointsInCircle()
+{
+	return numberOfPointsInCircle;
+}
+
+
+double MonteCarloMethod::Calculate(int numberIter, int numberThreads)
+{
+	ThreadManager threadManager;
+
+	threadManager.CreateThreads(GeneratePoints, (LPVOID)numberIter, numberThreads);
+	threadManager.Run();
+
+	result = (double)(4. * MonteCarloMethod::GetNumberOfPointsInCircle() / numberIter);
 	return result;
 }

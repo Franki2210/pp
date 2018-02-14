@@ -27,9 +27,6 @@
     <ClInclude Include="ThreadManager.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="RandomizerForPoint.h">
-      <Filter>Файлы заголовков</Filter>
-    </ClInclude>
     <ClInclude Include="MonteCarloMethod.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
@@ -42,9 +39,6 @@
       <Filter>Исходные файлы</Filter>
     </ClCompile>
     <ClCompile Include="ThreadManager.cpp">
-      <Filter>Исходные файлы</Filter>
-    </ClCompile>
-    <ClCompile Include="RandomizerForPoint.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
     <ClCompile Include="MonteCarloMethod.cpp">

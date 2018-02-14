@@ -1,20 +1,18 @@
 #pragma once
-#include "RandomizerForPoint.h"
 #include <Windows.h>
 #include "ThreadManager.h"
 
 DWORD WINAPI GeneratePoints(LPVOID numberIter);
 
+const int CIRCLE_RADIUS = 1;
+
 class MonteCarloMethod
 {
 public:
-	MonteCarloMethod();
-	~MonteCarloMethod();
-
 	double Calculate(int numberIter, int numberThreads);
 
-	static void CurrentNumberIterInc();
-	static void NumberOfPointsInCircleInc();
+	static void IncCurrentNumberIter();
+	static void IncNumberOfPointsInCircle();
 	static unsigned long GetCurrentNumberIter();
 	static unsigned long GetNumberOfPointsInCircle();
 

@@ -4,18 +4,17 @@
 
 DWORD WINAPI GeneratePoints(LPVOID numberIters)
 {
+	double sizeOfSquareSide = CIRCLE_RADIUS * 2.;
 	for (; MonteCarloMethod::GetCurrentNumberIter() < (UINT32)numberIters; )
 	{
-		string progress = to_string(MonteCarloMethod::GetCurrentNumberIter()) + "/" + to_string((UINT32)numberIters);
-		cout << progress << endl;
-
-		pair<double, double> point = RandomizerForPoint::GetRandomCoordinatesInSquare(1.0);
-		double x = point.first;
-		double y = point.second;
+		double x = (double)(rand()) / RAND_MAX * sizeOfSquareSide - CIRCLE_RADIUS;
+		double y = (double)(rand()) / RAND_MAX * sizeOfSquareSide - CIRCLE_RADIUS;
 		if (x * x + y * y <= 1)
-			MonteCarloMethod::NumberOfPointsInCircleInc();
-		MonteCarloMethod::CurrentNumberIterInc();
-		if (MonteCarloMethod::GetCurrentNumberIter() > (UINT32)numberIters) break;
+			MonteCarloMethod::IncNumberOfPointsInCircle();
+
+		MonteCarloMethod::IncCurrentNumberIter();
+		string progress = to_string(MonteCarloMethod::GetCurrentNumberIter()) + "/" + to_string((UINT32)numberIters) + '\n';
+		cout << progress;
 	}
 
 	return 0;
@@ -24,21 +23,12 @@ DWORD WINAPI GeneratePoints(LPVOID numberIters)
 UINT32 MonteCarloMethod::currentNumberIter = 0;
 UINT32 MonteCarloMethod::numberOfPointsInCircle = 0;
 
-MonteCarloMethod::MonteCarloMethod()
-{
-}
-
-
-MonteCarloMethod::~MonteCarloMethod()
-{
-}
-
-void MonteCarloMethod::CurrentNumberIterInc()
+void MonteCarloMethod::IncCurrentNumberIter()
 {
 	InterlockedIncrement(&currentNumberIter);
 }
 
-void MonteCarloMethod::NumberOfPointsInCircleInc()
+void MonteCarloMethod::IncNumberOfPointsInCircle()
 {
 	InterlockedIncrement(&numberOfPointsInCircle);
 }

@@ -1,7 +1,7 @@
 #include "stdafx.h"
-#include "ThreadManager.h"
+#include "ThreadHandler.h"
 
-void ThreadManager::CreateThreads(LPTHREAD_START_ROUTINE threadProc, LPVOID param, int numberThreads)
+void ThreadHandler::CreateThreads(LPTHREAD_START_ROUTINE threadProc, LPVOID param, int numberThreads)
 {
 	SetThreadProc(threadProc);
 	SetParam(param);
@@ -12,7 +12,7 @@ void ThreadManager::CreateThreads(LPTHREAD_START_ROUTINE threadProc, LPVOID para
 	}
 }
 
-void ThreadManager::Run()
+void ThreadHandler::Run()
 {
 	for (int i = 0; i < numberThreads; ++i)
 		ResumeThread(m_handles.at(i));
@@ -20,17 +20,17 @@ void ThreadManager::Run()
 	WaitForMultipleObjects(numberThreads, m_handles.data(), true, INFINITE);
 }
 
-void ThreadManager::SetNumberThreads(int numberThreads)
+void ThreadHandler::SetNumberThreads(int numberThreads)
 {
 	this->numberThreads = numberThreads;
 }
 
-void ThreadManager::SetThreadProc(LPTHREAD_START_ROUTINE threadProc)
+void ThreadHandler::SetThreadProc(LPTHREAD_START_ROUTINE threadProc)
 {
 	this->threadProc = threadProc;
 }
 
-void ThreadManager::SetParam(LPVOID param)
+void ThreadHandler::SetParam(LPVOID param)
 {
 	this->param = param;
 }

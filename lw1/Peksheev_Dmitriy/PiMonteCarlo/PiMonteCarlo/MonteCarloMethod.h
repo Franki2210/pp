@@ -1,6 +1,6 @@
 #pragma once
 #include <Windows.h>
-#include "ThreadManager.h"
+#include "ThreadHandler.h"
 
 DWORD WINAPI GeneratePoints(LPVOID numberIter);
 

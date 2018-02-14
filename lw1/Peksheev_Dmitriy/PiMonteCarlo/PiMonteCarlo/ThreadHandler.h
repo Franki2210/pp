@@ -7,7 +7,7 @@
 
 using namespace std;
 
-class ThreadManager
+class ThreadHandler
 {
 public:
 	void CreateThreads(LPTHREAD_START_ROUTINE threadProc, LPVOID param, int numberThreads);

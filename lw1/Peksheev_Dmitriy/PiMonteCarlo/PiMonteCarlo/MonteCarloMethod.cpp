@@ -46,10 +46,10 @@ unsigned long MonteCarloMethod::GetNumberOfPointsInCircle()
 
 double MonteCarloMethod::Calculate(int numberIter, int numberThreads)
 {
-	ThreadManager threadManager;
+	ThreadHandler threadHandler;
 
-	threadManager.CreateThreads(GeneratePoints, (LPVOID)numberIter, numberThreads);
-	threadManager.Run();
+	threadHandler.CreateThreads(GeneratePoints, (LPVOID)numberIter, numberThreads);
+	threadHandler.Run();
 
 	result = (double)(4. * MonteCarloMethod::GetNumberOfPointsInCircle() / numberIter);
 	return result;

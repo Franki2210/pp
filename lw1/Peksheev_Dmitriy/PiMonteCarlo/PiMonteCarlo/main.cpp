@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "MonteCarloMethod.h"
 #include "Timer.h"
+#include "Logger.h"
 
 using namespace std;
 

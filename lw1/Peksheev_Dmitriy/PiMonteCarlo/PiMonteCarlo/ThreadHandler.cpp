@@ -14,7 +14,7 @@ void ThreadHandler::CreateThreads(LPTHREAD_START_ROUTINE threadProc, LPVOID para
 
 void ThreadHandler::Run()
 {
-	for (int i = 0; i < numberThreads; ++i)
+	for (int i = 0; i < m_handles.size(); ++i)
 		ResumeThread(m_handles.at(i));
 
 	WaitForMultipleObjects(numberThreads, m_handles.data(), true, INFINITE);
@@ -33,4 +33,10 @@ void ThreadHandler::SetThreadProc(LPTHREAD_START_ROUTINE threadProc)
 void ThreadHandler::SetParam(LPVOID param)
 {
 	this->param = param;
+}
+
+ThreadHandler::~ThreadHandler()
+{
+	for (int i = 0; i < numberThreads; ++i)
+		CloseHandle(m_handles.at(i));
 }

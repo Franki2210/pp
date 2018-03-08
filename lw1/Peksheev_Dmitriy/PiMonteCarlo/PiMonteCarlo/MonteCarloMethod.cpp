@@ -1,6 +1,7 @@
 #include "stdafx.h"
+
+#include "Logger.h"
 #include "MonteCarloMethod.h"
-#include <string>
 
 DWORD WINAPI GeneratePoints(LPVOID numberIters)
 {
@@ -13,8 +14,6 @@ DWORD WINAPI GeneratePoints(LPVOID numberIters)
 			MonteCarloMethod::IncNumberOfPointsInCircle();
 
 		MonteCarloMethod::IncCurrentNumberIter();
-		string progress = to_string(MonteCarloMethod::GetCurrentNumberIter()) + "/" + to_string((UINT32)numberIters) + '\n';
-		cout << progress;
 	}
 
 	return 0;
@@ -48,6 +47,7 @@ double MonteCarloMethod::Calculate(int numberIter, int numberThreads)
 {
 	ThreadHandler threadHandler;
 
+	threadHandler.CreateThreads(Print, (LPVOID)numberIter, 1);
 	threadHandler.CreateThreads(GeneratePoints, (LPVOID)numberIter, numberThreads);
 	threadHandler.Run();
 

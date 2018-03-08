@@ -16,6 +16,8 @@ public:
 	void SetNumberThreads(int numberThreads);
 	void SetThreadProc(LPTHREAD_START_ROUTINE threadProc);
 	void SetParam(LPVOID param);
+
+	~ThreadHandler();
 private:
 	int numberThreads;
 	vector<HANDLE> m_handles;

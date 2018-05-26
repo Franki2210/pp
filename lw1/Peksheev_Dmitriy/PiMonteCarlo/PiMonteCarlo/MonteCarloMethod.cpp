@@ -47,7 +47,7 @@ double MonteCarloMethod::Calculate(int numberIter, int numberThreads)
 {
 	ThreadHandler threadHandler;
 
-	threadHandler.CreateThreads(Print, (LPVOID)numberIter, 1);
+	threadHandler.CreateThreads(PrintProgress, (LPVOID)numberIter, 1);
 	threadHandler.CreateThreads(GeneratePoints, (LPVOID)numberIter, numberThreads);
 	threadHandler.Run();
 

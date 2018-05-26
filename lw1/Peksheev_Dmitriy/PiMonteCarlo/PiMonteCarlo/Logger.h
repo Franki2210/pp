@@ -1,5 +1,5 @@
 #pragma once
 #include <Windows.h>
 
-DWORD WINAPI Print(LPVOID param);
+DWORD WINAPI PrintProgress(LPVOID param);
 

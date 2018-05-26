@@ -1,56 +1,25 @@
 #include "stdafx.h"
 
-#include "Logger.h"
 #include "MonteCarloMethod.h"
 
-DWORD WINAPI GeneratePoints(LPVOID numberIters)
+double MonteCarloMethod::Calculate(const int numberIter)
 {
 	double sizeOfSquareSide = CIRCLE_RADIUS * 2.;
-	for (; MonteCarloMethod::GetCurrentNumberIter() < (UINT32)numberIters; )
+	int numberOfPointsInCircle = 0;
+
+	#pragma omp parallel for
+	for (int i = 0; i < numberIter; ++i)
 	{
 		double x = (double)(rand()) / RAND_MAX * sizeOfSquareSide - CIRCLE_RADIUS;
 		double y = (double)(rand()) / RAND_MAX * sizeOfSquareSide - CIRCLE_RADIUS;
-		if (x * x + y * y <= 1)
-			MonteCarloMethod::IncNumberOfPointsInCircle();
 
-		MonteCarloMethod::IncCurrentNumberIter();
+		if (x * x + y * y <= 1)
+		{
+			#pragma omp atomic
+			++numberOfPointsInCircle;
+		}
 	}
 
-	return 0;
-}
-
-UINT32 MonteCarloMethod::currentNumberIter = 0;
-UINT32 MonteCarloMethod::numberOfPointsInCircle = 0;
-
-void MonteCarloMethod::IncCurrentNumberIter()
-{
-	InterlockedIncrement(&currentNumberIter);
-}
-
-void MonteCarloMethod::IncNumberOfPointsInCircle()
-{
-	InterlockedIncrement(&numberOfPointsInCircle);
-}
-
-unsigned long MonteCarloMethod::GetCurrentNumberIter()
-{
-	return currentNumberIter;
-}
-
-unsigned long MonteCarloMethod::GetNumberOfPointsInCircle()
-{
-	return numberOfPointsInCircle;
-}
-
-
-double MonteCarloMethod::Calculate(int numberIter, int numberThreads)
-{
-	ThreadHandler threadHandler;
-
-	threadHandler.CreateThreads(PrintProgress, (LPVOID)numberIter, 1);
-	threadHandler.CreateThreads(GeneratePoints, (LPVOID)numberIter, numberThreads);
-	threadHandler.Run();
-
-	result = (double)(4. * MonteCarloMethod::GetNumberOfPointsInCircle() / numberIter);
+	result = (double)(4. * numberOfPointsInCircle) / numberIter;
 	return result;
 }

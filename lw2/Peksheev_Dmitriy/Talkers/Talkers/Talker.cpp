@@ -18,26 +18,24 @@ Talker::~Talker()
 void Talker::CallOtherTalker(vector<Talker> & talkers)
 {
 	Sleep(GetRandomTime());
+	WaitForSingleObject(mutex, INFINITE);
 
-	if (WaitForSingleObject(mutex, 0) == WAIT_OBJECT_0)
+	Talker *otherTalker = GetRandomTalker(talkers);
+	printf("Talker#%d call to talker#%d\n", m_id, otherTalker->GetId());
+
+	if (otherTalker->Answer())
 	{
-		Talker *otherTalker = GetRandomTalker(talkers);
-		printf("Talker#%d call to talker#%d\n", m_id, otherTalker->GetId());
+		printf("Talker#%d talks with talker#%d\n", m_id, otherTalker->GetId());
+		Sleep(GetRandomTime());
 
-		if (otherTalker->Answer())
-		{
-			printf("Talker#%d talks with talker#%d\n", m_id, otherTalker->GetId());
-			Sleep(GetRandomTime());
-
-			printf("Talker#%d end talk with talker#%d\n", m_id, otherTalker->GetId());
-			otherTalker->EndTalk();
-		}
-		else
-		{
-			printf("Talker#%d is busy\n", otherTalker->GetId());
-		}
-		ReleaseMutex(mutex);
+		printf("Talker#%d end talk with talker#%d\n", m_id, otherTalker->GetId());
+		otherTalker->EndTalk();
 	}
+	else
+	{
+		printf("Talker#%d is busy\n", otherTalker->GetId());
+	}
+	ReleaseMutex(mutex);
 }
 
 Talker *Talker::GetRandomTalker(vector<Talker> & talkers)

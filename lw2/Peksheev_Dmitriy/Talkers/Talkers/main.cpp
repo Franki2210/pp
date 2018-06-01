@@ -24,14 +24,13 @@ DWORD WINAPI Process(LPVOID lpParam)
 
 int main(int argc, char* argv[])
 {
-	size_t numberOfTalkers = atoi(argv[1]);
-
 	if (argc != ARG_COUNT)
 	{
 		cout << ">Invalid count of arguments!\n"
 			<< "Use: Talkers.exe <talkers count>\n";
 		return EXIT_FAILURE;
 	}
+	size_t numberOfTalkers = atoi(argv[1]);
 
 	vector<Talker> talkers;
 
